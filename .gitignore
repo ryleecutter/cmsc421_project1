@@ -1,0 +1,28 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IDE junk
+.vscode/
+.idea/
+
+#aima code
+aima-python/notebooks/.ipynb_checkpoints/
+
+# Graphviz code
+*.gv
+*.svg
+
+# Logs
+*.log
