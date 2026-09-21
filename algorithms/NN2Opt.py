@@ -3,23 +3,51 @@ import sys
 
 import NN 
 
-matrix = np.loadtxt(sys.argv[1])
-path, cost = NN(matrix)
 
-distance = lambda city1, city2: matrix[city1][city2] #gives edge cost from one city to another
 
-def twoOpt(oldRoute1, oldRoute2): #oldRoute1, oldRoute2 are tuples (city1, city2). 
-    cost1 = distance(oldRoute1[0],oldRoute1[1])
-    cost2 = distance(oldRoute2[0],oldRoute2[1])
-    #need to consider oldRoute1[0] -> oldRoute2[0] and oldRoute1[1] -> oldRoute2[1]
-    # is asking: is going from city1 -> city3, city2->city4 better than original? if so will need to reverse all intermediate cities.   
-    newCost1 = distance(oldRoute1[0], oldRoute2[0])
-    newCost2 = distance(oldRoute1[1],oldRoute2[1])
+
+def twoOpt(matrix, path, i, j):
+
+    cost1 = matrix[path[i]][path[i+1]] #old edges
+    cost2 = matrix[path[j]][path[j+1]] 
+
     
-    timeDelta = newCost1 + newCost2 - (cost1 + cost2) 
-    #return new cost so that the modifier can change or not change. 
-    return timeDelta
+    newCost1 = matrix[path[i]][path[j]]#new edges
+    newCost2 = matrix[path[i+1]][path[j+1]]
+
+    return newCost1 + newCost2 - (cost1 + cost2)
+
     
-def modifier(path, cost):
-    3
-    #takes the path and 
+    
+#takes the path and total current cost. 
+def improve(path, matrix):
+    n=len(path)
+    #need to loop through every possible edge pairing to find a possible edge swap pairing.
+    #but needs to stop when there is no imporvement. so needs boolean? 
+    improvement = True
+    while improvement:
+        improvement = False
+        for i in range(1, n-3): 
+            for j in range(i+2, n-1): # last city ( connects back to first city )
+                timeDelta = twoOpt(matrix,path,i,j)
+                if timeDelta < 0:
+                    #new edges are less. reverse intermediary nodes.
+                   path[i+1:j+1] = path[i+1:j+1][::-1]
+                   improvement = True
+    return path
+
+def main():
+    if len(sys.argv) > 2:
+        print("wrong inputs: python NN2Opt.py matrix.txt")
+        sys.exit(1)
+    
+    matrix = np.loadtxt(sys.argv[1])
+    path, cost = NN.run_nn(sys.argv[1])
+    newPath = improve(path,matrix)
+    newCost = sum(matrix[newPath[i]][newPath[i+1]] for i in range(len(newPath)-1))
+    print(f"new path = {newPath}")
+    print(f"new cost = {newCost}")
+    
+
+if __name__ == "__main__":
+    main()

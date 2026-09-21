@@ -1,7 +1,9 @@
 import numpy as np
 import sys 
 
-matrix = np.loadtxt(sys.argv[1])
+def run_nn(path):
+    matrix = np.loadtxt(path)
+    return NN(matrix)
 
 def NN(matrix):
     n = matrix.shape[0]
@@ -30,9 +32,10 @@ def NN(matrix):
 
     print(f"path: {path}")
     print(f"cost: {cost}")
-    
+    return path, cost
 
-NN(matrix)
+if __name__ == "__main__":
+    run_nn(sys.argv[1])
 
        
        
