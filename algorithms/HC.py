@@ -12,7 +12,7 @@ def randomTour(matrix, n):
     total_cost = 0
     #just gonna find all possible cities
     #then random over that k 
-    possible = [(j for j in range(len(current)) if j not in traversed)]   
+    possible = [(j for j in range(n) if j not in traversed)][0]
     
     while possible.size() > 0: 
         rand = np.random.randint(possible.size())
@@ -23,8 +23,8 @@ def randomTour(matrix, n):
         current = rand
         possible.remove(current)
         
-    path.add[start]
-    total_cost =+ matrix[current][start]
+    path.append(start)
+    total_cost += matrix[current][start]
     return (total_cost, path)
 
 #takes matrix, path.
