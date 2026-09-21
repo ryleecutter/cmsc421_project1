@@ -10,16 +10,33 @@ def getPossible(matrix, current, k, visited):
     
     possible.sort(key = lambda city: city[0]) #just using city cost, as matrix[current][j] returns edge cost.
 
-    return possible[::k] #returns up until k, sorted from min -> k min
+    return possible[:k] #returns up until k, sorted from min -> k min (cost, index)
+
 
 #returns some traversal and cost
 def RRNN(matrix, k, n): 
-    start = np.random.randint(n) #random start
+    start = np.random.randint(n-1) #random start
     visited = {start} #lookup
     path = [start] #real path
+    total_cost = 0
+    current = start
+    #we have a function which returns the possible given the current node. 
+    #need to go through until size(path) == len(matrix), then add final node to first node. 
+    while len(path) < len(matrix):
+        
+        #find the possible values
+        possible = getPossible(matrix, current, k, visited) #returns list.
+        rand = np.random.randint(len(possible)-1)
+        current = possible[rand][1]
+        total_cost += possible[rand][0] #finds the cost of that node from current current -> possible[rand]
+        visited.add(current) #adds the node which is randomly selected from the k choices
+        path.append(current) #adds to path
+        
+    #reconnect. 
+    total_cost += matrix[current][start]
+    path.append(start)
     
-     
-    
+
 
 def main():
     #define k and num_repeats
