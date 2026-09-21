@@ -9,7 +9,7 @@ def NN(matrix):
     n = matrix.shape[0]
     start = np.random.randint(0,n) #uniform dist. random int from 0 -> n-1 (all n)
 
-    visited = {start} #O(1) lookup with dict
+    visited = {start} #O(1) lookup with set
     path = [start] #0->n-1->0 path
     cost = 0 
     current = start
