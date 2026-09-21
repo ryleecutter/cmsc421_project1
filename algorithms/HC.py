@@ -1,6 +1,7 @@
 import numpy as np
 import sys 
 import random 
+from utils import cost  #takes matrix and path
 
 # returns (cost: float, path: List)
 def randomTour(matrix, n):
@@ -27,12 +28,6 @@ def randomTour(matrix, n):
     total_cost += matrix[current][start]
     return (total_cost, path)
 
-def cost(matrix, path):
-    sum=0
-    for i in range(len(path)-2):
-        for j in range(i+1,len(path)-1):
-            sum += matrix[i][j]   
-    return sum
 
 #takes matrix, path.
 #is called 
