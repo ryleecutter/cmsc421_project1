@@ -30,8 +30,8 @@ def NN(matrix):
     cost = cost + matrix[current][start] #need to add cost from last node to start again. 
     path.append(start) #add start back to end of array path. 
 
-    print(f"path: {path}")
-    print(f"cost: {cost}")
+    print(f"best cost: {cost}")
+    print(f"best path: {path}")
     return path, cost
 
 if __name__ == "__main__":

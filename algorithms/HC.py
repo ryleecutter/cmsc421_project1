@@ -21,7 +21,6 @@ def randomTour(matrix, n):
         traversed.add(possible[rand])
         total_cost += matrix[current][possible[rand]]
         current = possible[rand]
-        print(possible)
         possible.remove(possible[rand])
         
     path.append(start)
@@ -30,32 +29,21 @@ def randomTour(matrix, n):
 
 def cost(matrix, path):
     sum=0
-    for i in range(len(path)-1):
-        for j in range(i+1,len(path)):
+    for i in range(len(path)-2):
+        for j in range(i+1,len(path)-1):
             sum += matrix[i][j]   
     return sum
 
 #takes matrix, path.
+#is called 
 #returns the new cost and path. 
 def swap(matrix, path):
     tpath = path.copy()
     n = len(tpath)
-    if n < 4:
-        print("must be >= 4")
-        return 99999, path
-    print(n-2)
-    validrange = range(1,n-2)
-    i,j = random.sample(validrange,2)
-    #now have two random indices.
-    #swap and then return with cost
-    newCost1 = matrix[path[i]][path[j]]#new edges' cost
-    newCost2 = matrix[path[i+1]][path[j+1]]
-    
-    tpath[i+1:j+1] = tpath[i+1:j+1][::-1] #new path with all intermediates swpaped.
-    
-
-    
-    return (sum(matrix, tpath), tpath)
+    validrange = range(1,n-1)
+    i,j = random.sample(validrange,2) #when we have enough nodes to have non trivial swaps.
+    tpath[i],tpath[j] = tpath[j],tpath[i]
+    return (cost(matrix,tpath), tpath)
     
     
     
@@ -69,6 +57,7 @@ def HC(matrix, n, num_swaps, improvement_ratio):
         if cost/current_cost < improvement_ratio: 
             current_cost = cost
             current_path = path
+        #now need to greedily select the best. 
     return (current_cost,current_path)
     
     
@@ -94,12 +83,12 @@ def main():
     
     for i in range(num_restarts):
         it_cost, it_path = HC(matrix, n, num_swaps, improvement_ratio) #best path from this iteration
-        if it_cost < best_path[0]:
-            best_path[0] = it_cost
-            best_path[1] = it_path #new best path
+        if it_cost < best_cost:
+            best_cost = it_cost
+            best_path = it_path #new best path
     
-    print(f"best cost: {best_path[0]}")
-    print(f"best path: {best_path[1]}")
+    print(f"best cost: {best_cost}")
+    print(f"best path: {best_path}")
         
 
 if __name__ == "__main__":

@@ -61,8 +61,8 @@ def main():
             best_path = path #update based on total cost.
             best_cost = cost
     #found the best path given k and num_repeats w/ different random starting node.
-    print(f"best path: {best_path}")
     print(f"best cost: {best_cost}")
+    print(f"best path: {best_path}")
         
         
         
