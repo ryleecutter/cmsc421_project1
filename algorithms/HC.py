@@ -1,6 +1,6 @@
 import numpy as np
 import sys 
-
+import random 
 
 # returns (cost: float, path: List)
 def randomTour(matrix, n):
@@ -12,31 +12,40 @@ def randomTour(matrix, n):
     total_cost = 0
     #just gonna find all possible cities
     #then random over that k 
-    possible = [(j for j in range(n) if j not in traversed)][0]
+    possible = [j for j in range(n) if j not in traversed]
     
-    while possible.size() > 0: 
-        rand = np.random.randint(possible.size())
+    while len(possible) > 0: 
+        rand = np.random.randint(len(possible))
         #need to add to path 
-        path.append(rand)
-        traversed.add(rand)
-        total_cost += matrix[current][rand]
-        current = rand
-        possible.remove(current)
+        path.append(possible[rand])
+        traversed.add(possible[rand])
+        total_cost += matrix[current][possible[rand]]
+        current = possible[rand]
+        print(possible)
+        possible.remove(possible[rand])
         
     path.append(start)
     total_cost += matrix[current][start]
     return (total_cost, path)
 
+def cost(matrix, path):
+    sum=0
+    for i in range(len(path)-1):
+        for j in range(i+1,len(path)):
+            sum += matrix[i][j]   
+    return sum
+
 #takes matrix, path.
 #returns the new cost and path. 
 def swap(matrix, path):
-    tpath = path
+    tpath = path.copy()
     n = len(tpath)
     if n < 4:
         print("must be >= 4")
         return 99999, path
+    print(n-2)
     validrange = range(1,n-2)
-    i,j = np.random.sample(validrange,2)
+    i,j = random.sample(validrange,2)
     #now have two random indices.
     #swap and then return with cost
     newCost1 = matrix[path[i]][path[j]]#new edges' cost
@@ -44,7 +53,11 @@ def swap(matrix, path):
     
     tpath[i+1:j+1] = tpath[i+1:j+1][::-1] #new path with all intermediates swpaped.
     
-    return (newCost1 + newCost2,tpath)
+
+    
+    return (sum(matrix, tpath), tpath)
+    
+    
     
 #returns the best (cost : float, path : List) 
 def HC(matrix, n, num_swaps, improvement_ratio):
@@ -61,6 +74,7 @@ def HC(matrix, n, num_swaps, improvement_ratio):
     
     
     
+    
 
 def main():
     
@@ -71,7 +85,8 @@ def main():
     
     
     #need to define a variable which is the best cost and best traversal
-    best_path = (99999999, [])  #arbitary cost
+    best_cost = 9999999999  #arbitary cost
+    best_path = []
     #need to read in matrix
     matrix = np.loadtxt(sys.argv[1])
     n = matrix.shape[0] # num of row
