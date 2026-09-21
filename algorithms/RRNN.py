@@ -43,8 +43,8 @@ def main():
     #define k and num_repeats
     
     ###########        Hyperparameters      ##########
-    k = 3
-    num_repeats = 5
+    k = 5
+    num_repeats = 15
     ###########                             ##########
     
     
