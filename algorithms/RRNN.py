@@ -26,7 +26,7 @@ def RRNN(matrix, k, n):
         
         #find the possible values
         possible = getPossible(matrix, current, k, visited) #returns list.
-        rand = np.random.randint(len(possible)-1)
+        rand = np.random.randint(len(possible))
         current = possible[rand][1]
         total_cost += possible[rand][0] #finds the cost of that node from current current -> possible[rand]
         visited.add(current) #adds the node which is randomly selected from the k choices
@@ -35,6 +35,7 @@ def RRNN(matrix, k, n):
     #reconnect. 
     total_cost += matrix[current][start]
     path.append(start)
+    return path, total_cost
     
 
 
@@ -42,7 +43,7 @@ def main():
     #define k and num_repeats
     
     ###########        Hyperparameters      ##########
-    k = 1
+    k = 3
     num_repeats = 5
     ###########                             ##########
     
