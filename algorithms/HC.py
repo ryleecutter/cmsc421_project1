@@ -83,7 +83,7 @@ def main():
     #define how many times hillclimbing will run
     
     for i in range(num_restarts):
-        it_cost, it_path = HC(matrix, n, num_swaps, improvement_ratio) #best path from this iteration
+        it_cost, it_path = HC(matrix, n) #best path from this iteration
         if it_cost < best_cost:
             best_cost = it_cost
             best_path = it_path #new best path
