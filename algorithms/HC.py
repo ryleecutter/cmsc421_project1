@@ -1,7 +1,7 @@
 import numpy as np
 import sys 
 import random 
-from utils import cost  #takes matrix and path
+
 
 # returns (cost: float, path: List)
 def randomTour(matrix, n):
@@ -28,6 +28,11 @@ def randomTour(matrix, n):
     total_cost += matrix[current][start]
     return (total_cost, path)
 
+def cost(matrix, path):
+    sum=0
+    for i in range(len(path)-2):
+        sum += matrix[path[i]][path[i+1]]   
+    return sum
 
 #takes matrix, path.
 #is called 
@@ -43,13 +48,16 @@ def swap(matrix, path):
     
     
 #returns the best (cost : float, path : List) 
-def HC(matrix, n, num_swaps, improvement_ratio):
+def HC(matrix, n):
     #need to find the random tour to start our path
     current_cost, current_path = randomTour(matrix, n)
     #now that i have some solution, i need to select some i,j to swap
-    for i in range(num_swaps): #perform swaps this many times     
+    improvement = True
+    while improvement:
+        improvement = False#perform swaps this many times     
         cost,path = swap(matrix, current_path)
-        if cost/current_cost < improvement_ratio: 
+        if cost < current_cost:
+            improvement = True
             current_cost = cost
             current_path = path
         #now need to greedily select the best. 
@@ -62,10 +70,8 @@ def HC(matrix, n, num_swaps, improvement_ratio):
 
 def main():
     
-    #need hyperparameter for num restarts and number of swaps to try before no improvemnt
+    #need hyperparameter for num restarts 
     num_restarts = 3
-    num_swaps = 15
-    improvement_ratio = .9975 #the amount in which the cost should be less than path, .95 = 5% less.
     
     
     #need to define a variable which is the best cost and best traversal
