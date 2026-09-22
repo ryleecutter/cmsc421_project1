@@ -6,7 +6,7 @@ import random
 # returns (cost: float, path: List)
 def randomTour(matrix, n):
     #could do random start -> random node not in traversed ... -> back to start, calc cost.
-    start = np.random.randint(n) #random int [0,n)
+    start = random.randint(0,n-1) #random int [0,n)
     current = start
     traversed = {current}
     path = [current]
@@ -16,7 +16,7 @@ def randomTour(matrix, n):
     possible = [j for j in range(n) if j not in traversed]
     
     while len(possible) > 0: 
-        rand = np.random.randint(len(possible))
+        rand = random.randint(0,len(possible)-1)
         #need to add to path 
         path.append(possible[rand])
         traversed.add(possible[rand])

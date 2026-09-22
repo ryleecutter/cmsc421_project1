@@ -76,7 +76,7 @@ def fewestEdges(edge_map, n, child):
         else: 
             if len(edge_map[i]) < len(edge_map[fewest[0]]) and i not in child: #found city with less edges, reset fewest list, add new city
                 fewest = [i]
-    return np.random.choice(fewest) if len(fewest) > 1 else fewest[0]
+    return random.choice(fewest) if len(fewest) > 1 else fewest[0]
 
 
 
@@ -137,7 +137,8 @@ def GA(n, pop_size, mut_chance, population):
     if random.uniform(0,1) < mut_chance:
        return mutation(child)
     
-    return child
+    return [int(x) for x in child]
+
          
     
 
@@ -145,7 +146,7 @@ def GA(n, pop_size, mut_chance, population):
 def combineGenerations(matrix,population, children):
     #combine the two then sort them and use half the length 
     #best fit is based on cost of traversal... 
-    costfunc = partial(cost, matrix=matrix)
+    costfunc = partial(cost, matrix)
     sortedpop = sorted(population + children, key=costfunc) #has both lists sorted together.
     return sortedpop[:len(sortedpop)//2]
 
@@ -158,9 +159,9 @@ def main():
     
     ##### HYPERPARAMETERS #####
     mut_chance = .05 #the prob of mutating a child after creation
-    pop_size = 2  #the amount of possible parents for next generation > 1
-    gen_num = 3 #how many full generations
-    children_gen = 5 #how many chilren per generation
+    pop_size = 35  #the amount of possible parents for next generation > 1
+    gen_num = 100 #how many full generations
+    children_gen = 67 #how many chilren per generation
      ########################
     children = [] #list of children to be combined with pop after each gen. 
     
@@ -173,9 +174,15 @@ def main():
             children.append(GA(n, pop_size, mut_chance, population))
         #after each generation, combine the best fitting. 
         population = combineGenerations(matrix, population, children)
-        
     
-
+    mcost = partial(cost, matrix)
+    
+    best = sorted(population, key = mcost)
+    best_path = best[0]
+    best_cost = cost(matrix,best_path)
+    
+    print(f"best cost: {best_cost} ")
+    print(f"best path: {best_path}")
 
 
 if __name__ == "__main__":
