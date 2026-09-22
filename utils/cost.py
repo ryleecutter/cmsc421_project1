@@ -9,6 +9,5 @@ import random
 def cost(matrix, path):
     sum=0
     for i in range(len(path)-2):
-        for j in range(i+1,len(path)-1):
-            sum += matrix[i][j]   
+            sum += matrix[path[i]][path[i+1]]   
     return sum
