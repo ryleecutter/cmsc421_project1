@@ -1,10 +1,10 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "aima"))
 import numpy as np
 from scipy.sparse.csgraph import minimum_spanning_tree as mst 
 import sys
-import random
-from HC import cost
-from functools import partial
-from aima import utils
+import utils
 
 
 #each state is represented by a node with: 
@@ -24,8 +24,10 @@ class State:
         self.parent = parent
         self.start = start
         self.n = n
+        
     #define a heuristic cost. 
     def heuristic(self, matrix):
+        unvisited = self.unvisited
         if len(unvisited) == 0:
             self.h = matrix[self.current][self.start]
         else:
@@ -34,13 +36,16 @@ class State:
             h1 = minDist(matrix, self.current, unvisited)
             h2 = minDist(matrix, self.start, unvisited)
             self.h = mst_cost + h1 + h2
-            self.f = self.g + self.h
+        self.f = self.g + self.h
+            
     #returns the sum of the best mst.
     def sumMST(self, sparse):
         return np.sum(sparse.toarray())
+    
     #inits the evaluation value
     def fx(self):
         self.f = self.g + self.h
+        
     def unvisited(self):
        return set(range(self.n)) - self.visited
 
@@ -54,7 +59,9 @@ def path(matrix, state):
         path.append(state.current)
         state = state.parent
     path.append(state.current)
-    return path.reverse()
+    path.reverse()
+    return path
+
 
 def main():
     matrix = np.loadtxt(sys.argv[1])
@@ -71,19 +78,23 @@ def main():
        fringe.append(x)
 
     #pop from fringe
-    partialstate = fringe.pop    
-    #check goal
-    if len(partialstate.visited) == n:
-        return path(matrix, partialstate) #returns the path of the traversal
-    #generate successors
-    for x in partialstate.unvisited():
-         y = State(current=x, visited=partialstate.visited()+set(x), 
-                   g= partialstate.g + minDist(matrix,x,partialstate.unvisited() | {x}), 
-                   n=n, 
-                   parent=partialstate.current, start=partialstate.start)
-         y.heuristic(matrix)
-         y.fx()
-         fringe.append(y)
+    while fringe:
+        partialstate = fringe.pop()   
+        #check goal
+        if len(partialstate.visited) == n:
+            print(path(matrix, partialstate))
+            return path(matrix, partialstate) #returns the path of the traversal
+        #generate successors
+        for x in partialstate.unvisited():
+            y = State(current=x, visited=partialstate.visited() | {x}, 
+                    g= partialstate.g + matrix[partialstate.g][x], 
+                    n=n, 
+                    parent=partialstate, start=partialstate.start)
+            y.heuristic(matrix)
+            y.fx()
+            fringe.append(y)
+        
+
 
 
 
