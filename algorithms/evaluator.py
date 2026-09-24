@@ -16,38 +16,37 @@ def times(matrix, func, iterations):
     r, c = timer()
     avgcost = []
     for i in range(iterations):
-       
         path, cost = func(matrix)
         avgcost.append(cost)
     re, ce = timer()
-
+    import pdb; pdb.set_trace()
     return r-re/iterations , c-ce/iterations, path, sum(avgcost)/iterations
 
 #runs the matrix and calculates the times/stores the data in a dataframe.
 #times = number of runs. useful if cpu time = 0
 def runthis(matrix, algo, iterations):
     match algo:
-            case "Astar":
+            case "AStar":
                 from AStar import run_astar
-                func =  run_astar
+                func = run_astar
             case "GA":
                 from GA import run_GA 
-                func =  run_GA
+                func = run_GA
             case "HC":
                 from HC import run_HC
-                func =  run_HC 
+                func = run_HC 
             case "NN":
-                from NN import NN
-                func =  NN 
+                from NN import run_nn
+                func = run_nn
             case "NN2Opt":
                 from NN2Opt import run_NN2Opt
-                func =  run_NN2Opt 
+                func = run_NN2Opt 
             case "RRNN":
                 from RRNN import run_RRNN
-                func =  run_RRNN 
+                func = run_RRNN 
             case "SimAn":
                 from SimAn import run_SimAN
-                func =  run_SimAN    
+                func = run_SimAN    
             case _:
                 "error match case"
   # 

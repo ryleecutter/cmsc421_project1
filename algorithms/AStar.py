@@ -70,7 +70,8 @@ def path(matrix, state):
 
 def run_astar(matrix):
     if isinstance(matrix, str):
-            matrix = np.loadtxt(matrix)
+        matrix = np.loadtxt(matrix)
+    
     n = matrix.shape[0] # num rows
         
     
@@ -90,7 +91,7 @@ def run_astar(matrix):
         if len(partialstate.visited) == n:
             best_path = path(matrix, partialstate)
             
-            return cost(matrix, best_path), best_path #returns the path of the traversal
+            return best_path, cost(matrix, best_path) #returns the path of the traversal
         #generate successors
         for x in partialstate.unvisited():
             y = State(current=x, visited=partialstate.visited | {x}, 

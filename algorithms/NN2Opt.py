@@ -37,14 +37,15 @@ def improve(path, matrix):
     return path
 
 def run_NN2Opt(matrix):
+    
     if isinstance(matrix, str):
             matrix = np.loadtxt(matrix)
-    if len(sys.argv) > 2:
-        print("wrong inputs: python NN2Opt.py matrix.txt")
-        sys.exit(1)
+    #if len(sys.argv) > 2:
+     #   print("wrong inputs: python NN2Opt.py matrix.txt")
+     #   sys.exit(1)
     
     
-    path, cost = NN.run_nn(sys.argv[1])
+    path, cost = NN.run_nn(matrix)
     newPath = improve(path,matrix)
     newCost = sum(matrix[newPath[i]][newPath[i+1]] for i in range(len(newPath)-1))
     return newPath, newCost

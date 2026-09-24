@@ -3,7 +3,10 @@ import sys
 import time
 
 def run_nn(path):
-    matrix = np.loadtxt(path)
+    if isinstance(path, str):
+        matrix = np.loadtxt(path)
+    else: 
+        matrix = path
     return NN(matrix)
 
 def NN(matrix):
