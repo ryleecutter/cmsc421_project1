@@ -62,17 +62,28 @@ def runthis(matrix, algo, iterations):
         "matrix": matrix,
     }
 
+def printer(algo,start,stop,step):
+     for i in range(start,stop+1,step):
+            for j in range(0,10):
+                matrix = f"matrices/{i}_random_adj_mat_{j}.txt"
+                iterations = 50 #how many times to run the algo on this matrix. 
+                
+                
+                row_df = pd.DataFrame()
+                result = runthis(matrix, algo, iterations)
+                row_df = pd.concat([row_df, pd.DataFrame([result])], ignore_index=True)
+    
+                row_df.to_csv(f"{algo}results.csv", mode="a", header= not os.path.exists(f"{algo}results.csv"))
+
 def main():
     algo = sys.argv[1] # should go: python evaluator.py algo matrix
-    matrix = sys.argv[2]
-    iterations = 50 #how many times to run the algo on this matrix. 
-    
-    
-    row_df = pd.DataFrame()
-    result = runthis(matrix, algo, iterations)
-    row_df = pd.concat([row_df, pd.DataFrame([result])], ignore_index=True)
+    #0_random -> 10_random changes by 1 
+    printer(algo, 5, 10, 1)
+    #15_random -> 30_random changes by 5 
+    printer(algo, 15, 25, 5)
+    #40_random -> 50_random changes by 10
+    printer(algo,30,50,10)
 
-    row_df.to_csv("results1.csv", mode="a", header= not os.path.exists("results1.csv"))
 
 if __name__ == "__main__":
     main()
