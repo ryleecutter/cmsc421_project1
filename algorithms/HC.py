@@ -30,7 +30,7 @@ def randomTour(matrix, n):
 
 def cost(matrix, path):
     sum=0
-    for i in range(len(path)-2):
+    for i in range(len(path)-1):
         sum += matrix[path[i]][path[i+1]]   
     return sum
 
