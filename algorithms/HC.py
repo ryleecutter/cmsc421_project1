@@ -1,7 +1,7 @@
 import numpy as np
 import sys 
 import random 
-
+import time
 
 # returns (cost: float, path: List)
 def randomTour(matrix, n):
@@ -68,7 +68,7 @@ def HC(matrix, n):
     
     
 
-def main():
+def run_HC(matrix):
     
     #need hyperparameter for num restarts 
     num_restarts = 3
@@ -78,7 +78,7 @@ def main():
     best_cost = 9999999999  #arbitary cost
     best_path = []
     #need to read in matrix
-    matrix = np.loadtxt(sys.argv[1])
+    
     n = matrix.shape[0] # num of row
     #define how many times hillclimbing will run
     
@@ -88,9 +88,24 @@ def main():
             best_cost = it_cost
             best_path = it_path #new best path
     
-    print(f"best cost: {best_cost}")
-    print(f"best path: {best_path}")
+    return best_path, best_cost
         
 
 if __name__ == "__main__":
-    main()
+    matrix = np.loadtxt(sys.argv[1])
+    # Real time (wall clock)
+    start_real = time.time_ns()
+
+    # CPU time (process CPU)
+    start_cpu = time.process_time_ns()
+
+    
+    path, cost = run_HC(matrix)
+
+    end_real = time.time_ns()
+    end_cpu  = time.process_time_ns()
+
+    print("cost:", cost)
+    print("path:", path)
+    print("Real time (ns):", end_real - start_real)
+    print("CPU time (ns):", end_cpu - start_cpu)

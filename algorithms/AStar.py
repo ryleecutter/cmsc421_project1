@@ -6,7 +6,7 @@ from scipy.sparse.csgraph import minimum_spanning_tree as mst
 import sys
 import utils
 from HC import cost
-
+import time
 
 #each state is represented by a node with: 
 #   current_state
@@ -68,9 +68,8 @@ def path(matrix, state):
     return path
 
 
-def main():
-    #import pdb; pdb.set_trace()
-    matrix = np.loadtxt(sys.argv[1])
+def run_astar(matrix):
+    
     n = matrix.shape[0] # num rows
         
     
@@ -89,9 +88,8 @@ def main():
         #check goal
         if len(partialstate.visited) == n:
             best_path = path(matrix, partialstate)
-            print(f"best cost: {cost(matrix,best_path)}")
-            print(f"best path: {best_path}")
-            return best_path #returns the path of the traversal
+            
+            return cost(matrix, best_path), best_path #returns the path of the traversal
         #generate successors
         for x in partialstate.unvisited():
             y = State(current=x, visited=partialstate.visited | {x}, 
@@ -108,4 +106,20 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    matrix = np.loadtxt(sys.argv[1])
+    # Real time (wall clock)
+    start_real = time.time_ns()
+
+    # CPU time (process CPU)
+    start_cpu = time.process_time_ns()
+
+    
+    path, cost = run_astar(matrix)
+
+    end_real = time.time_ns()
+    end_cpu  = time.process_time_ns()
+
+    print("cost:", cost)
+    print("path:", path)
+    print("Real time (ns):", end_real - start_real)
+    print("CPU time (ns):", end_cpu - start_cpu)

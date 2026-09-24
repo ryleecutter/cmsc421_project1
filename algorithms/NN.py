@@ -1,5 +1,6 @@
 import numpy as np
 import sys 
+import time
 
 def run_nn(path):
     matrix = np.loadtxt(path)
@@ -30,14 +31,28 @@ def NN(matrix):
     cost = cost + matrix[current][start] #need to add cost from last node to start again. 
     path.append(start) #add start back to end of array path. 
 
-    print(f"best cost: {cost}")
-    print(f"best path: {path}")
+   
     return path, cost
 
 if __name__ == "__main__":
-    run_nn(sys.argv[1])
+    matrix = np.loadtxt(sys.argv[1])
+    # Real time (wall clock)
+    start_real = time.time_ns()
 
-       
+    # CPU time (process CPU)
+    start_cpu = time.process_time_ns()
+
+    
+    path, cost = NN(matrix)
+
+    end_real = time.time_ns()
+    end_cpu  = time.process_time_ns()
+
+    print("cost:", cost)
+    print("path:", path)
+    print("Real time (ns):", end_real - start_real)
+    print("CPU time (ns):", end_cpu - start_cpu)
+
        
        
 

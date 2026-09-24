@@ -1,6 +1,6 @@
 import numpy as np
 import sys 
-
+import time
 import NN 
 
 
@@ -36,18 +36,39 @@ def improve(path, matrix):
                    improvement = True
     return path
 
-def main():
+def run2Opt(matrix):
     if len(sys.argv) > 2:
         print("wrong inputs: python NN2Opt.py matrix.txt")
         sys.exit(1)
     
-    matrix = np.loadtxt(sys.argv[1])
+    
     path, cost = NN.run_nn(sys.argv[1])
     newPath = improve(path,matrix)
     newCost = sum(matrix[newPath[i]][newPath[i+1]] for i in range(len(newPath)-1))
-    print(f"new path = {newPath}")
-    print(f"new cost = {newCost}")
+    return newPath, newCost
     
 
+
 if __name__ == "__main__":
-    main()
+    matrix = np.loadtxt(sys.argv[1])
+    # Real time (wall clock)
+    start_real = time.time_ns()
+
+    # CPU time (process CPU)
+    start_cpu = time.process_time_ns()
+
+    
+    path, cost = run2Opt(matrix)
+
+    end_real = time.time_ns()
+    end_cpu  = time.process_time_ns()
+
+    print("cost:", cost)
+    print("path:", path)
+    print("Real time (ns):", end_real - start_real)
+    print("CPU time (ns):", end_cpu - start_cpu)
+
+       
+       
+
+

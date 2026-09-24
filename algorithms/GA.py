@@ -3,6 +3,7 @@ import sys
 import random 
 from HC import randomTour, swap, cost
 from functools import partial
+import time
 
 #returns a list of pop_size number random traversals
 def getPopulation(matrix, pop_size, n):
@@ -152,9 +153,9 @@ def combineGenerations(matrix,population, children):
 
 
 
-def main():
+def run_GA(matrix):
     
-    matrix = np.loadtxt(sys.argv[1])
+    
     n = matrix.shape[0] #amnt of row
     
     ##### HYPERPARAMETERS #####
@@ -180,10 +181,26 @@ def main():
     best = sorted(population, key = mcost)
     best_path = best[0]
     best_cost = cost(matrix,best_path)
-    
-    print(f"best cost: {best_cost} ")
-    print(f"best path: {best_path}")
+    return best_path, best_cost
+   
+
 
 
 if __name__ == "__main__":
-    main()
+    matrix = np.loadtxt(sys.argv[1])
+    # Real time (wall clock)
+    start_real = time.time_ns()
+
+    # CPU time (process CPU)
+    start_cpu = time.process_time_ns()
+
+    
+    path, cost = run_GA(matrix)
+
+    end_real = time.time_ns()
+    end_cpu  = time.process_time_ns()
+
+    print("cost:", cost)
+    print("path:", path)
+    print("Real time (ns):", end_real - start_real)
+    print("CPU time (ns):", end_cpu - start_cpu)

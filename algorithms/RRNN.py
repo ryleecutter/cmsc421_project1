@@ -1,6 +1,6 @@
 import numpy as np 
 import sys
-
+import time
 
 
 
@@ -39,7 +39,7 @@ def RRNN(matrix, k, n):
     
 
 
-def main():
+def run_RRNN():
     #define k and num_repeats
     
     ###########        Hyperparameters      ##########
@@ -61,8 +61,7 @@ def main():
             best_path = path #update based on total cost.
             best_cost = cost
     #found the best path given k and num_repeats w/ different random starting node.
-    print(f"best cost: {best_cost}")
-    print(f"best path: {best_path}")
+    return best_path, best_cost
         
         
         
@@ -70,11 +69,25 @@ def main():
     
     
     
-
 
 
 if __name__ == "__main__":
-    main()
+    matrix = np.loadtxt(sys.argv[1])
+    # Real time (wall clock)
+    start_real = time.time_ns()
 
+    # CPU time (process CPU)
+    start_cpu = time.process_time_ns()
 
+    
+    path, cost = run_RRNN()
 
+    end_real = time.time_ns()
+    end_cpu  = time.process_time_ns()
+
+    print("cost:", cost)
+    print("path:", path)
+    print("Real time (ns):", end_real - start_real)
+    print("CPU time (ns):", end_cpu - start_cpu)
+
+       

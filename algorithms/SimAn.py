@@ -3,6 +3,7 @@ import sys
 import random
 from HC import randomTour, swap, cost
 import math
+import time
 
 #takes in the matrix, the amount of cities, alpha : cooling rate, initial temperature, the max iterations
 #returns the best (cost, path)
@@ -15,7 +16,7 @@ def simA(matrix, n, alpha, temp, iters):
     
     for i in range(iters):
         newcost, newpath = swap(matrix, path)#find a neighboring solution, makes copy so doesnt change. 
-        p = 1/(math.exp((newcost-cost)/temp)) #calc probability
+        p = math.exp(-(newcost - cost) / temp)  #calc probability
         if newcost < cost or random.uniform(0,1) < p: #random.random returns 0 <= x <= 1 uniformly
             path = newpath
             cost = newcost  #update the best solution
@@ -24,7 +25,7 @@ def simA(matrix, n, alpha, temp, iters):
     return (cost,path)
 
 
-def main():
+def run_SimAN():
     matrix = np.loadtxt(sys.argv[1]) #input matrix
     n = matrix.shape[0] #find number of rows 
     
@@ -35,8 +36,24 @@ def main():
     #################
     
     bestcost,bestpath = simA(matrix, n, alpha, initTemp, maxIters)
-    print(f"best cost: {bestcost}")
-    print(f"best path: {bestpath}")
+    return bestpath, bestcost
 
 if __name__ == "__main__":
-    main() 
+    # Real time (wall clock)
+    start_real = time.time_ns()
+
+    # CPU time (process CPU)
+    start_cpu = time.process_time_ns()
+
+    
+    path, cost = run_SimAN()
+
+    end_real = time.time_ns()
+    end_cpu  = time.process_time_ns()
+
+    print("cost:", cost)
+    print("path:", path)
+    print("Real time (ns):", end_real - start_real)
+    print("CPU time (ns):", end_cpu - start_cpu)
+
+       
