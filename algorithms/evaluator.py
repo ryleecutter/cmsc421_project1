@@ -5,6 +5,12 @@ import time
 import sys
 import pdb 
 
+#need to save data from each size matrix into the same dataframe, should be 10 inputs (_,_,_) for each size n 
+#this way i can get the true median of the data size for cpu, real, cost
+def saveData():
+    #for each run save as (med cost, avg cpu, avg real)
+    
+    ...
 
 def timer():
     realtime = time.time_ns()
@@ -13,13 +19,13 @@ def timer():
 
 def times(matrix, func, iterations):
     r, c = timer()
-    avgcost = []
+    medcost = []
     for i in range(iterations):
         path, cost = func(matrix)
-        avgcost.append(cost)
+        medcost.append(cost)
     re, ce = timer()
-    import pdb; pdb.set_trace()
-    return r-re/iterations , c-ce/iterations, path, sum(avgcost)/iterations
+    
+    return r-re/iterations , c-ce/iterations, path, medcost[len(medcost)//2]
 
 #runs the matrix and calculates the times/stores the data in a dataframe.
 #times = number of runs. useful if cpu time = 0
@@ -58,7 +64,7 @@ def runthis(matrix, algo, iterations):
 def main():
     algo = sys.argv[1] # should go: python evaluator.py algo matrix
     matrix = sys.argv[2]
-    iterations = 3 #how many times to run the algo on this matrix. 
+    iterations = 10 #how many times to run the algo on this matrix. 
     
     runthis(matrix, algo, iterations)
 

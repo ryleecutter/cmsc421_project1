@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "aima"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "aima")) # wont run the code. nice
 import numpy as np
 from scipy.sparse.csgraph import minimum_spanning_tree as mst 
 import sys
