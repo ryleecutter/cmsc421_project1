@@ -36,7 +36,7 @@ def improve(path, matrix):
                    improvement = True
     return path
 
-def run2Opt(matrix):
+def run_NN2Opt(matrix):
     if len(sys.argv) > 2:
         print("wrong inputs: python NN2Opt.py matrix.txt")
         sys.exit(1)
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     start_cpu = time.process_time_ns()
 
     
-    path, cost = run2Opt(matrix)
+    path, cost = run_NN2Opt(matrix)
 
     end_real = time.time_ns()
     end_cpu  = time.process_time_ns()

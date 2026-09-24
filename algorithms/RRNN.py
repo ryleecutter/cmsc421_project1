@@ -39,7 +39,7 @@ def RRNN(matrix, k, n):
     
 
 
-def run_RRNN():
+def run_RRNN(matrix):
     #define k and num_repeats
     
     ###########        Hyperparameters      ##########
@@ -47,8 +47,6 @@ def run_RRNN():
     num_repeats = 15
     ###########                             ##########
     
-    
-    matrix = np.loadtxt(sys.argv[1]) #receive matrix
     
     n = matrix.shape[0] #get length of row
     
@@ -80,7 +78,7 @@ if __name__ == "__main__":
     start_cpu = time.process_time_ns()
 
     
-    path, cost = run_RRNN()
+    path, cost = run_RRNN(matrix)
 
     end_real = time.time_ns()
     end_cpu  = time.process_time_ns()

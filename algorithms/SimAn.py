@@ -25,8 +25,8 @@ def simA(matrix, n, alpha, temp, iters):
     return (cost,path)
 
 
-def run_SimAN():
-    matrix = np.loadtxt(sys.argv[1]) #input matrix
+def run_SimAN(matrix):
+    
     n = matrix.shape[0] #find number of rows 
     
     #HYPERPARAMETERS
@@ -39,6 +39,7 @@ def run_SimAN():
     return bestpath, bestcost
 
 if __name__ == "__main__":
+    matrix = np.loadtxt(sys.argv[1]) #input matrix
     # Real time (wall clock)
     start_real = time.time_ns()
 
@@ -46,7 +47,7 @@ if __name__ == "__main__":
     start_cpu = time.process_time_ns()
 
     
-    path, cost = run_SimAN()
+    path, cost = run_SimAN(matrix)
 
     end_real = time.time_ns()
     end_cpu  = time.process_time_ns()
