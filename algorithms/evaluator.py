@@ -4,13 +4,8 @@ import numpy as np
 import time
 import sys
 import pdb 
-
-#need to save data from each size matrix into the same dataframe, should be 10 inputs (_,_,_) for each size n 
-#this way i can get the true median of the data size for cpu, real, cost
-def saveData():
-    #for each run save as (med cost, avg cpu, avg real)
+import os
     
-    ...
 
 def timer():
     realtime = time.time_ns()
@@ -25,7 +20,7 @@ def times(matrix, func, iterations):
         medcost.append(cost)
     re, ce = timer()
     
-    return r-re/iterations , c-ce/iterations, path, medcost[len(medcost)//2]
+    return abs(r-re)/iterations , abs(c-ce)/iterations, path, medcost[len(medcost)//2]
 
 #runs the matrix and calculates the times/stores the data in a dataframe.
 #times = number of runs. useful if cpu time = 0
@@ -55,21 +50,29 @@ def runthis(matrix, algo, iterations):
             case _:
                 "error match case"
   # 
-    avgreal, avgcpu, path, cost = times(matrix, func ,iterations)
+    avgreal, avgcpu, path, medcost = times(matrix, func ,iterations)
     print(f"\niterations: {iterations}")
-    print(f"average cost: {cost}\n(last) path: {path}")
+    print(f"average cost: {medcost}\n(last) path: {path}")
     print(f"clock time: {avgreal * .001} \ncpu time: {avgcpu * .001}\n") #nanoseconds -> microseconds
-    return avgreal, avgcpu
+    return {
+        "n": len(path)-1, #rows
+        "avg_real": avgreal,
+        "avg_cpu": avgcpu,
+        "med_cost": medcost,
+        "matrix": matrix,
+    }
 
 def main():
     algo = sys.argv[1] # should go: python evaluator.py algo matrix
     matrix = sys.argv[2]
-    iterations = 10 #how many times to run the algo on this matrix. 
+    iterations = 50 #how many times to run the algo on this matrix. 
     
-    runthis(matrix, algo, iterations)
+    
+    row_df = pd.DataFrame()
+    result = runthis(matrix, algo, iterations)
+    row_df = pd.concat([row_df, pd.DataFrame([result])], ignore_index=True)
 
-
-
+    row_df.to_csv("results1.csv", mode="a", header= not os.path.exists("results1.csv"))
 
 if __name__ == "__main__":
     main()
