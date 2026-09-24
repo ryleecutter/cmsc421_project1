@@ -37,6 +37,8 @@ def improve(path, matrix):
     return path
 
 def run_NN2Opt(matrix):
+    if isinstance(matrix, str):
+            matrix = np.loadtxt(matrix)
     if len(sys.argv) > 2:
         print("wrong inputs: python NN2Opt.py matrix.txt")
         sys.exit(1)

@@ -69,7 +69,8 @@ def path(matrix, state):
 
 
 def run_astar(matrix):
-    
+    if isinstance(matrix, str):
+            matrix = np.loadtxt(matrix)
     n = matrix.shape[0] # num rows
         
     

@@ -48,6 +48,9 @@ def run_RRNN(matrix):
     ###########                             ##########
     
     
+    if isinstance(matrix, str):
+            matrix = np.loadtxt(matrix)
+    
     n = matrix.shape[0] #get length of row
     
     best_path = [] #storage for actual best path.

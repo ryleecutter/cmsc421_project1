@@ -69,7 +69,8 @@ def HC(matrix, n):
     
 
 def run_HC(matrix):
-    
+    if isinstance(matrix, str):
+            matrix = np.loadtxt(matrix)
     #need hyperparameter for num restarts 
     num_restarts = 3
     

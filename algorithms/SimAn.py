@@ -26,7 +26,8 @@ def simA(matrix, n, alpha, temp, iters):
 
 
 def run_SimAN(matrix):
-    
+    if isinstance(matrix, str):
+            matrix = np.loadtxt(matrix)
     n = matrix.shape[0] #find number of rows 
     
     #HYPERPARAMETERS

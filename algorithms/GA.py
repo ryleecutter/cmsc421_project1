@@ -154,7 +154,8 @@ def combineGenerations(matrix,population, children):
 
 
 def run_GA(matrix):
-    
+    if isinstance(matrix, str):
+            matrix = np.loadtxt(matrix)
     
     n = matrix.shape[0] #amnt of row
     
