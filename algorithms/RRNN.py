@@ -49,7 +49,7 @@ def run_RRNN(matrix):
       #define k and num_repeats
      ###########        Hyperparameters      ##########
     k = 3
-    num_repeats = 40
+    num_repeats = 35
         ###########                             ##########
     
     best_path = None #storage for actual best path.
