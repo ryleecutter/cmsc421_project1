@@ -47,12 +47,8 @@ class State:
         key = frozenset(unvisited) #turns into an immutable object so we can use key
          #new state -> sets have no order, so checks all possibilities
         if key not in State.memoize:
-            l = list(unvisited) #need infex
-          
-            #need to extract all the distances between the vertices. 
-            sub = np.array([matrix[i, j] for i in l for j in l])
-            State.memoize[key] = self.sumMST(mst(sub))
-            
+            l = list(unvisited) #
+            State.memoize[key] = self.sumMST(mst(matrix[np.ix_(l, l)])) #same as before just added to memoize now
         mst_cost = State.memoize[key]  #either way it is now in memoize. 
         self.h = mst_cost + minDist(matrix, self.current, unvisited) + minDist(matrix, self.start, unvisited)
         self.f = self.g + self.h 
@@ -126,14 +122,14 @@ def run_astar(matrix):
 
 if __name__ == "__main__":
     matrix = np.loadtxt(sys.argv[1])
-    # Real time (wall clock)
+    # weal time 
     start_real = time.time_ns()
 
-    # CPU time (process CPU)
+    # cpu time 
     start_cpu = time.process_time_ns()
 
     
-    path, cost = run_astar(matrix)
+    path, cost, it = run_astar(matrix)
 
     end_real = time.time_ns()
     end_cpu  = time.process_time_ns()
