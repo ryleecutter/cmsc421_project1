@@ -74,7 +74,7 @@ def printer(algo,start,stop,step):
                 result = runthis(matrix, algo, iterations)
                 row_df = pd.concat([row_df, pd.DataFrame([result])], ignore_index=True)
     
-                row_df.to_csv(f"{algo}resultsmut=.05.csv", mode="a", header= not os.path.exists(f"{algo}resultsmut=.05.csv"))
+                row_df.to_csv(f"{algo}resultsovergens.csv", mode="a", header= not os.path.exists(f"{algo}resultsovergens.csv"))
 
 def main():
     algo = sys.argv[1] # should go: python evaluator.py algo matrix

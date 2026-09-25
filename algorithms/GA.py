@@ -174,6 +174,18 @@ def run_GA(matrix):
     
     
     population = getPopulation(matrix, pop_size, n) #initial random population. 
+    
+    results = []
+
+    
+    best_cost = min(cost(matrix, path) for path in population)
+
+    results.append({
+        "Generation": 0,
+        "Best Cost": best_cost
+    })
+
+    
      #creates population of random traversals, parents.
     for j in range(gen_num):#this many generations
         children = [] #list of children to be combined with pop after each gen. 
@@ -181,13 +193,18 @@ def run_GA(matrix):
             children.append(GA(n, pop_size, mut_chance, population, matrix))
         #after each generation, combine the best fitting. 
         population = combineGenerations(matrix, population, children, pop_size)
-    
+
+        best_cost = min(cost(matrix, path) for path in population)
+        results.append({
+            "Generation": j,
+            "Best Cost": best_cost
+        })
     mcost = partial(cost, matrix)
     
     best = sorted(population, key = mcost)
     best_path = best[0]
     best_cost = cost(matrix,best_path)
-    return best_path, best_cost, pop_size
+    return best_path, best_cost, results 
    
 
 
