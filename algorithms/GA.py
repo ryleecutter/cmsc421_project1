@@ -57,14 +57,15 @@ def removeCity(edge_map, current_city):
     
 
 
-def parents(population, pop_size):
-    #select 2 random parents 
-    r1 = random.randint(0, pop_size - 1)
-    r2 = random.randint(0, pop_size - 1)
-    while r1 == r2:
-        r2 = random.randint(0, pop_size - 1)
-    return population[r1], population[r2]
+def parents(population, matrix):
+    
+    cand1 = random.sample(population, 3) #just choose 1 out of 3 random in pop
+    p1 = min(cand1, key=lambda x: cost(matrix, x))
 
+    cand2 = random.sample(population, 3)
+    p2 = min(cand2, key=lambda x: cost(matrix, x))
+
+    return p1, p2
 #takes the current map and amnt of items in list and then 
 #finds option with fewest edges, if tied chooses randomly.
 # refer to @fewestCurrent for within the set.
@@ -115,9 +116,9 @@ def mutation(path):
     return tpath #new child
 
 #returns each generation. so that main can run simAn on many gens. 
-def GA(n, pop_size, mut_chance, population):
+def GA(n, pop_size, mut_chance, population, matrix):
     
-    p1,p2 = parents(population, pop_size) #get two parents
+    p1,p2 = parents(population, matrix) #get two parents
     edge_map = edgeMap(p1,p2, n) #if negative then its prioritized: common sequence in both parents
     child = []
     #need to create a child by using ER (enhanced with common edges)
@@ -148,12 +149,12 @@ def GA(n, pop_size, mut_chance, population):
     
 
 
-def combineGenerations(matrix,population, children):
+def combineGenerations(matrix,population, children, pop_size):
     #combine the two then sort them and use half the length 
     #best fit is based on cost of traversal... 
     costfunc = partial(cost, matrix)
     sortedpop = sorted(population + children, key=costfunc) #has both lists sorted together.
-    return sortedpop[:len(sortedpop)//2]
+    return sortedpop[:pop_size]
 
 
 
@@ -164,29 +165,29 @@ def run_GA(matrix):
     n = matrix.shape[0] #amnt of row
     
     ##### HYPERPARAMETERS #####
-    mut_chance = .0 #the prob of mutating a child after creation
+    mut_chance = .05
     pop_size = 30   #the amount of possible parents for next generation > 1
     gen_num = 40 #how many full generations
-    children_gen = 10 #how many chilren per generation
+    children_gen = 20 #how many chilren per generation
      ########################
-    children = [] #list of children to be combined with pop after each gen. 
+    
     
     
     population = getPopulation(matrix, pop_size, n) #initial random population. 
      #creates population of random traversals, parents.
     for j in range(gen_num):#this many generations
-        
+        children = [] #list of children to be combined with pop after each gen. 
         for i in range(children_gen): #make this many children per generation
-            children.append(GA(n, pop_size, mut_chance, population))
+            children.append(GA(n, pop_size, mut_chance, population, matrix))
         #after each generation, combine the best fitting. 
-        population = combineGenerations(matrix, population, children)
+        population = combineGenerations(matrix, population, children, pop_size)
     
     mcost = partial(cost, matrix)
     
     best = sorted(population, key = mcost)
     best_path = best[0]
     best_cost = cost(matrix,best_path)
-    return best_path, best_cost, mut_chance
+    return best_path, best_cost, pop_size
    
 
 
@@ -200,7 +201,8 @@ if __name__ == "__main__":
     start_cpu = time.process_time_ns()
 
     
-    path, cost = run_GA(matrix)
-
+    path, cost, _ = run_GA(matrix)
+    print("Best path:", path)
+    print("Best cost:", cost)
     end_real = time.time_ns()
     end_cpu  = time.process_time_ns() 

@@ -60,21 +60,21 @@ def runthis(matrix, algo, iterations):
         "avg_cpu": avgcpu,
         "med_cost": medcost,
         "matrix": matrix,
-        "mutation_chance": restarts
+        "popsize": restarts
     }
 
 def printer(algo,start,stop,step):
      for i in range(start,stop+1,step):
             for j in range(0,10):
                 matrix = f"matrices/{i}_random_adj_mat_{j}.txt"
-                iterations = 25#how many times to run the algo on this matrix. 
+                iterations = 10#how many times to run the algo on this matrix. 
                 
                 
                 row_df = pd.DataFrame()
                 result = runthis(matrix, algo, iterations)
                 row_df = pd.concat([row_df, pd.DataFrame([result])], ignore_index=True)
     
-                row_df.to_csv(f"{algo}resultspopsize=20.csv", mode="a", header= not os.path.exists(f"{algo}resultspopsize=20.csv"))
+                row_df.to_csv(f"{algo}resultsmut=.05.csv", mode="a", header= not os.path.exists(f"{algo}resultsmut=.05.csv"))
 
 def main():
     algo = sys.argv[1] # should go: python evaluator.py algo matrix
