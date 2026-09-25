@@ -164,10 +164,10 @@ def run_GA(matrix):
     n = matrix.shape[0] #amnt of row
     
     ##### HYPERPARAMETERS #####
-    mut_chance = .05 #the prob of mutating a child after creation
-    pop_size = 20   #the amount of possible parents for next generation > 1
+    mut_chance = .0 #the prob of mutating a child after creation
+    pop_size = 30   #the amount of possible parents for next generation > 1
     gen_num = 40 #how many full generations
-    children_gen = 20 #how many chilren per generation
+    children_gen = 10 #how many chilren per generation
      ########################
     children = [] #list of children to be combined with pop after each gen. 
     
@@ -186,7 +186,7 @@ def run_GA(matrix):
     best = sorted(population, key = mcost)
     best_path = best[0]
     best_cost = cost(matrix,best_path)
-    return best_path, best_cost
+    return best_path, best_cost, mut_chance
    
 
 

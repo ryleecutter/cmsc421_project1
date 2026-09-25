@@ -11,13 +11,16 @@ import time
 def simA(matrix, n, alpha, temp, iters):
     
     cost, path = randomTour(matrix, n)#find a random traversal 
-     
+    best = cost
+    history = [best]
     #check if cost is better or if it is randomly selected to be the new path.
     
     for i in range(iters):
         newcost, newpath = swap(matrix, path)#find a neighboring solution, makes copy so doesnt change. 
+         
          #calc probability
         if newcost < cost:
+            
             path = newpath
             cost = newcost  #update the best solution
             #calc new temp to lessen proabbility
@@ -25,10 +28,15 @@ def simA(matrix, n, alpha, temp, iters):
         else:
             p = math.exp(-(newcost - cost) / temp) 
             if random.uniform(0,1) < p:
+                
                 path = newpath
                 cost = newcost
+        if cost < best:
+            best_cost = cost
+            best_path = path.copy()
+        history.append(cost)
 
-    return (cost,path)
+    return cost, path, history
 
 
 def run_SimAN(matrix):
@@ -37,13 +45,13 @@ def run_SimAN(matrix):
     n = matrix.shape[0] #find number of rows 
     
     #HYPERPARAMETERS
-    alpha = .90  #0-1 , .9-.99 .9 is extremely fast, .95 is fast, .99 is slow.
+    alpha = .95  #0-1 , .9-.99 .9 is extremely fast, .95 is fast, .99 is slow.
     initTemp = 10 #5-20, 10 is better than 5.
-    maxIters = 1300 #500+ is good.
+    maxIters = 100 #500+ is good.
     #################
     
-    bestcost,bestpath = simA(matrix, n, alpha, initTemp, maxIters)
-    return bestpath, bestcost, alpha
+    bestcost,bestpath, history = simA(matrix, n, alpha, initTemp, maxIters)
+    return bestpath, bestcost, history
 
 if __name__ == "__main__":
     matrix = np.loadtxt(sys.argv[1]) #input matrix
