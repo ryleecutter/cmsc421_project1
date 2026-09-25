@@ -19,8 +19,8 @@ def times(matrix, func, iterations):
         path, cost = func(matrix)
         medcost.append(cost)
     re, ce = timer()
-    
-    return abs(r-re)/iterations , abs(c-ce)/iterations, path, medcost[len(medcost)//2]
+
+    return abs(r-re)/iterations , abs(c-ce)/iterations, path, np.median(medcost)
 
 #runs the matrix and calculates the times/stores the data in a dataframe.
 #times = number of runs. useful if cpu time = 0
@@ -50,7 +50,7 @@ def runthis(matrix, algo, iterations):
             case _:
                 "error match case"
   # 
-    avgreal, avgcpu, path, medcost = times(matrix, func ,iterations)
+    avgreal, avgcpu, path, medcost= times(matrix, func ,iterations)
     print(f"\niterations: {iterations}")
     print(f"average cost: {medcost}\n(last) path: {path}")
     print(f"clock time: {avgreal * .001} \ncpu time: {avgcpu * .001}\n") #nanoseconds -> microseconds
@@ -60,20 +60,21 @@ def runthis(matrix, algo, iterations):
         "avg_cpu": avgcpu,
         "med_cost": medcost,
         "matrix": matrix,
+        "k" : 3,
     }
 
 def printer(algo,start,stop,step):
      for i in range(start,stop+1,step):
             for j in range(0,10):
                 matrix = f"matrices/{i}_random_adj_mat_{j}.txt"
-                iterations = 50 #how many times to run the algo on this matrix. 
+                iterations = 100#how many times to run the algo on this matrix. 
                 
                 
                 row_df = pd.DataFrame()
                 result = runthis(matrix, algo, iterations)
                 row_df = pd.concat([row_df, pd.DataFrame([result])], ignore_index=True)
     
-                row_df.to_csv(f"{algo}results.csv", mode="a", header= not os.path.exists(f"{algo}results.csv"))
+                row_df.to_csv(f"{algo}results15.csv", mode="a", header= not os.path.exists(f"{algo}results15.csv"))
 
 def main():
     algo = sys.argv[1] # should go: python evaluator.py algo matrix

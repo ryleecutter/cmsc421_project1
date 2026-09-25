@@ -18,6 +18,10 @@ def getPopulation(matrix, pop_size, n):
 #note: since using edgemap[p1[i]]... p1[i] will be a city, so then edgemap's indices will hold the cities in order. with 0 index with 1st city.
 #if p1[0] = 4, then edgemp[4] = 4's adjacency list. so we can treat edgemap's index directly as the city.
 def edgeMap(p1, p2, n):
+    #print("cost:", cost)
+    #print("path:", path)
+   # print("Real time (ns):", end_real - start_real)
+    #print("CPU time (ns):", end_cpu - start_cpu)
     #need two structures;
     #direct neighbor list from both
     edgemap = [set() for _ in range(n)] #list with set, same indices as given in matrix
@@ -161,9 +165,9 @@ def run_GA(matrix):
     
     ##### HYPERPARAMETERS #####
     mut_chance = .05 #the prob of mutating a child after creation
-    pop_size = 35  #the amount of possible parents for next generation > 1
-    gen_num = 100 #how many full generations
-    children_gen = 67 #how many chilren per generation
+    pop_size = 20   #the amount of possible parents for next generation > 1
+    gen_num = 40 #how many full generations
+    children_gen = 20 #how many chilren per generation
      ########################
     children = [] #list of children to be combined with pop after each gen. 
     
@@ -199,9 +203,4 @@ if __name__ == "__main__":
     path, cost = run_GA(matrix)
 
     end_real = time.time_ns()
-    end_cpu  = time.process_time_ns()
-
-    print("cost:", cost)
-    print("path:", path)
-    print("Real time (ns):", end_real - start_real)
-    print("CPU time (ns):", end_cpu - start_cpu)
+    end_cpu  = time.process_time_ns() 
