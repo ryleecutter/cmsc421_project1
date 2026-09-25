@@ -26,7 +26,9 @@ def RRNN(matrix, k, n):
     while len(path) < n:
         #find the possible values
         possible = getPossible(matrix, current, k, visited) #returns list.
-        rand = random.choice(possible)
+        costs = [w for w, city in possible]
+        weights = [1/w for w in costs]
+        rand = random.choices(possible, weights=weights, k=1)[0]
         current = rand[1]
         total_cost += rand[0] #finds the cost of that node from current current -> possible[rand]
         visited.add(current) #adds the node which is randomly selected from the k choices
@@ -47,7 +49,7 @@ def run_RRNN(matrix):
       #define k and num_repeats
      ###########        Hyperparameters      ##########
     k = 3
-    num_repeats = 15
+    num_repeats = 40
         ###########                             ##########
     
     best_path = None #storage for actual best path.

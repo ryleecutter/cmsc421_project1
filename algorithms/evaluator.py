@@ -60,14 +60,14 @@ def runthis(matrix, algo, iterations):
         "avg_cpu": avgcpu,
         "med_cost": medcost,
         "matrix": matrix,
-        "k" : 3,
+        "k" : 5,
     }
 
 def printer(algo,start,stop,step):
      for i in range(start,stop+1,step):
             for j in range(0,10):
                 matrix = f"matrices/{i}_random_adj_mat_{j}.txt"
-                iterations = 100#how many times to run the algo on this matrix. 
+                iterations = 50#how many times to run the algo on this matrix. 
                 
                 
                 row_df = pd.DataFrame()
