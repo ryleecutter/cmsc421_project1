@@ -52,7 +52,7 @@ def HC(matrix, n, neighborhood):
     #need to find the random tour to start our path
     current_cost, current_path = randomTour(matrix, n)
     #now that i have some solution, i need to select some i,j to swap
-    
+    history = [current_cost]
     while True:
         best_path = current_path
         best_cost = current_cost
@@ -64,10 +64,11 @@ def HC(matrix, n, neighborhood):
         if best_cost < current_cost:
             current_cost = best_cost
             current_path = best_path
+            history.append(current_cost)
         else:
             break
             #now need to greedily select the best. 
-    return (current_cost,current_path)
+    return (current_cost,current_path, history)
     
     
     
@@ -79,7 +80,7 @@ def run_HC(matrix):
             matrix = np.loadtxt(matrix)
     #need hyperparameter for num restarts -- defines how many times hillclimbing will run
     num_restarts = 30
-    neighborhood = 1
+    neighborhood = 50
     
     #need to define a variable which is the best cost and best traversal
     best_cost = 9999999999  #arbitary cost
@@ -90,12 +91,12 @@ def run_HC(matrix):
     
     
     for i in range(num_restarts):
-        it_cost, it_path = HC(matrix, n, neighborhood) #best path from this iteration
+        it_cost, it_path, history = HC(matrix, n, neighborhood) #best path from this iteration
         if it_cost < best_cost:
             best_cost = it_cost
             best_path = it_path #new best path
     
-    return best_path, best_cost, neighborhood
+    return best_path, best_cost, history
         
 
 if __name__ == "__main__":

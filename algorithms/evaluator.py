@@ -55,12 +55,12 @@ def runthis(matrix, algo, iterations):
     print(f"average cost: {medcost}\n(last) path: {path}")
     print(f"clock time: {avgreal * .001} \ncpu time: {avgcpu * .001}\n") #nanoseconds -> microseconds
     return {
-        "n": len(path)-1, #rows
-        "avg_real": avgreal,
-        "avg_cpu": avgcpu,
+       # "n": len(path)-1, #rows
+       # "avg_real": avgreal,
+        #"avg_cpu": avgcpu,
         "med_cost": medcost,
-        "matrix": matrix,
-        "neighborhood_size": restarts,
+        #"matrix": matrix,
+        "restarts": restarts,
     }
 
 def printer(algo,start,stop,step):
@@ -74,7 +74,7 @@ def printer(algo,start,stop,step):
                 result = runthis(matrix, algo, iterations)
                 row_df = pd.concat([row_df, pd.DataFrame([result])], ignore_index=True)
     
-                row_df.to_csv(f"{algo}resultsrestart30.csv", mode="a", header= not os.path.exists(f"{algo}resultsrestart30.csv"))
+                row_df.to_csv(f"{algo}resultsoveriters.csv", mode="a", header= not os.path.exists(f"{algo}resultsoveriters.csv"))
 
 def main():
     algo = sys.argv[1] # should go: python evaluator.py algo matrix
