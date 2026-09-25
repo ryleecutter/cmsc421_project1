@@ -48,7 +48,7 @@ class State:
          #new state -> sets have no order, so checks all possibilities
         if key not in State.memoize:
             l = list(unvisited) #
-            State.memoize[key] = self.sumMST(mst(matrix[np.ix_(l, l)])) #copied from aima surelty allowed... lol
+            State.memoize[key] = self.sumMST(mst(matrix[np.ix_(l, l)])) #np.ix_ gives a submatrix that contains the combinations of indices. thats why i can call it on matrix. its like matrix[i][j] for all unvisited.
         mst_cost = State.memoize[key]  #either way it is now in memoize. 
         self.h = mst_cost + minDist(matrix, self.current, unvisited) + minDist(matrix, self.start, unvisited)
         self.f = self.g + self.h 

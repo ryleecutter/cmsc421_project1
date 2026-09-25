@@ -74,7 +74,7 @@ def printer(algo,start,stop,step):
                 result = runthis(matrix, algo, iterations)
                 row_df = pd.concat([row_df, pd.DataFrame([result])], ignore_index=True)
     
-                row_df.to_csv(f"{algo}resultsexpanded.csv", mode="a", header= not os.path.exists(f"{algo}resultsexpanded.csv"))
+                row_df.to_csv(f"{algo}results.csv", mode="a", header= not os.path.exists(f"{algo}results.csv"))
 
 def main():
     algo = sys.argv[1] # should go: python evaluator.py algo matrix
@@ -83,7 +83,7 @@ def main():
     #15_random -> 30_random changes by 5 
     printer(algo, 15, 30, 5)
     #40_random -> 50_random changes by 10
-    #printer(algo,30,50,10)
+    printer(algo,30,50,10)
 
 
 if __name__ == "__main__":
