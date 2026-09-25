@@ -48,7 +48,7 @@ class State:
          #new state -> sets have no order, so checks all possibilities
         if key not in State.memoize:
             l = list(unvisited) #
-            State.memoize[key] = self.sumMST(mst(matrix[np.ix_(l, l)])) #same as before just added to memoize now
+            State.memoize[key] = self.sumMST(mst(matrix[np.ix_(l, l)])) #copied from aima surelty allowed... lol
         mst_cost = State.memoize[key]  #either way it is now in memoize. 
         self.h = mst_cost + minDist(matrix, self.current, unvisited) + minDist(matrix, self.start, unvisited)
         self.f = self.g + self.h 
@@ -81,7 +81,7 @@ def path(matrix, state):
 
 
 def run_astar(matrix):
-    State.memoize.clear()
+    State.memoize.clear() # i think whjen im running evaluator it might be using the state memoize since its the sam eprocess but idk srely this isnt super slow or something lol
     expanded =0
     if isinstance(matrix, str):
         matrix = np.loadtxt(matrix)
