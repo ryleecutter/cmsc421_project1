@@ -16,12 +16,18 @@ def simA(matrix, n, alpha, temp, iters):
     
     for i in range(iters):
         newcost, newpath = swap(matrix, path)#find a neighboring solution, makes copy so doesnt change. 
-        p = math.exp(-(newcost - cost) / temp)  #calc probability
-        if newcost < cost or random.uniform(0,1) < p: #random.random returns 0 <= x <= 1 uniformly
+         #calc probability
+        if newcost < cost:
             path = newpath
             cost = newcost  #update the best solution
             #calc new temp to lessen proabbility
             temp = alpha * temp
+        else:
+            p = math.exp(-(newcost - cost) / temp) 
+            if random.uniform(0,1) < p:
+                path = newpath
+                cost = newcost
+
     return (cost,path)
 
 
@@ -31,13 +37,13 @@ def run_SimAN(matrix):
     n = matrix.shape[0] #find number of rows 
     
     #HYPERPARAMETERS
-    alpha = .98  #0-1 , .9-.99 .9 is extremely fast, .95 is fast, .99 is slow.
-    initTemp = 9 #5-20, 10 is better than 5.
+    alpha = .90  #0-1 , .9-.99 .9 is extremely fast, .95 is fast, .99 is slow.
+    initTemp = 10 #5-20, 10 is better than 5.
     maxIters = 1300 #500+ is good.
     #################
     
     bestcost,bestpath = simA(matrix, n, alpha, initTemp, maxIters)
-    return bestpath, bestcost
+    return bestpath, bestcost, alpha
 
 if __name__ == "__main__":
     matrix = np.loadtxt(sys.argv[1]) #input matrix
