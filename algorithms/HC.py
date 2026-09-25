@@ -67,7 +67,7 @@ def HC(matrix, n, neighborhood):
         else:
             break
             #now need to greedily select the best. 
-        return (current_cost,current_path)
+    return (current_cost,current_path)
     
     
     
@@ -78,7 +78,7 @@ def run_HC(matrix):
     if isinstance(matrix, str):
             matrix = np.loadtxt(matrix)
     #need hyperparameter for num restarts -- defines how many times hillclimbing will run
-    num_restarts = 3
+    num_restarts = 50
     neighborhood = 20
     
     #need to define a variable which is the best cost and best traversal
