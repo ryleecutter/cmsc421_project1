@@ -37,7 +37,7 @@ def NN(matrix):
     cost = cost + matrix[current][start] #need to add cost from last node to start again. 
     path.append(start) #add start back to end of array path. 
 
-   
+    
     return path, cost
 
 if __name__ == "__main__":
@@ -54,10 +54,10 @@ if __name__ == "__main__":
     end_real = time.time_ns()
     end_cpu  = time.process_time_ns()
 
-    print("cost:", cost)
-    print("path:", path)
-    print("Real time (ns):", end_real - start_real)
-    print("CPU time (ns):", end_cpu - start_cpu)
+   # print("cost:", cost)
+   # print("path:", path)
+  #  print("Real time (ns):", end_real - start_real)
+  #  print("CPU time (ns):", end_cpu - start_cpu)
 
        
        

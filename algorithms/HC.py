@@ -48,20 +48,27 @@ def swap(matrix, path):
     
     
 #returns the best (cost : float, path : List) 
-def HC(matrix, n):
+def HC(matrix, n, neighborhood):
     #need to find the random tour to start our path
     current_cost, current_path = randomTour(matrix, n)
     #now that i have some solution, i need to select some i,j to swap
-    improvement = True
-    while improvement:
-        improvement = False#perform swaps this many times     
-        cost,path = swap(matrix, current_path)
-        if cost < current_cost:
-            improvement = True
-            current_cost = cost
-            current_path = path
-        #now need to greedily select the best. 
-    return (current_cost,current_path)
+    history = [current_cost]
+    while True:
+        best_path = current_path
+        best_cost = current_cost
+        for _ in range(neighborhood):
+            cost,path = swap(matrix, current_path)
+            if cost < current_cost:
+                best_cost = cost
+                best_path = path
+        if best_cost < current_cost:
+            current_cost = best_cost
+            current_path = best_path
+            history.append(current_cost)
+        else:
+            break
+            #now need to greedily select the best. 
+    return (current_cost,current_path, history)
     
     
     
@@ -71,9 +78,9 @@ def HC(matrix, n):
 def run_HC(matrix):
     if isinstance(matrix, str):
             matrix = np.loadtxt(matrix)
-    #need hyperparameter for num restarts 
-    num_restarts = 3
-    
+    #need hyperparameter for num restarts -- defines how many times hillclimbing will run
+    num_restarts = 30
+    neighborhood = 50
     
     #need to define a variable which is the best cost and best traversal
     best_cost = 9999999999  #arbitary cost
@@ -81,15 +88,15 @@ def run_HC(matrix):
     #need to read in matrix
     
     n = matrix.shape[0] # num of row
-    #define how many times hillclimbing will run
+    
     
     for i in range(num_restarts):
-        it_cost, it_path = HC(matrix, n) #best path from this iteration
+        it_cost, it_path, history = HC(matrix, n, neighborhood) #best path from this iteration
         if it_cost < best_cost:
             best_cost = it_cost
             best_path = it_path #new best path
     
-    return best_path, best_cost
+    return best_path, best_cost, history
         
 
 if __name__ == "__main__":
@@ -101,7 +108,7 @@ if __name__ == "__main__":
     start_cpu = time.process_time_ns()
 
     
-    path, cost = run_HC(matrix)
+    path, cost, num_restarts = run_HC(matrix)
 
     end_real = time.time_ns()
     end_cpu  = time.process_time_ns()

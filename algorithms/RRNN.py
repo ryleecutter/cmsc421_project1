@@ -1,6 +1,7 @@
 import numpy as np 
 import sys
 import time
+import random
 
 
 
@@ -15,20 +16,21 @@ def getPossible(matrix, current, k, visited):
 
 #returns some traversal and cost
 def RRNN(matrix, k, n): 
-    start = np.random.randint(n-1) #random start
+    start = np.random.randint(0,n)
     visited = {start} #lookup
     path = [start] #real path
     total_cost = 0
     current = start
     #we have a function which returns the possible given the current node. 
     #need to go through until size(path) == len(matrix), then add final node to first node. 
-    while len(path) < len(matrix):
-        
+    while len(path) < n:
         #find the possible values
         possible = getPossible(matrix, current, k, visited) #returns list.
-        rand = np.random.randint(len(possible))
-        current = possible[rand][1]
-        total_cost += possible[rand][0] #finds the cost of that node from current current -> possible[rand]
+        costs = [w for w, city in possible]
+        weights = [1/w for w in costs]
+        rand = random.choices(possible, weights=weights, k=1)[0]
+        current = rand[1]
+        total_cost += rand[0] #finds the cost of that node from current current -> possible[rand]
         visited.add(current) #adds the node which is randomly selected from the k choices
         path.append(current) #adds to path
         
@@ -40,21 +42,18 @@ def RRNN(matrix, k, n):
 
 
 def run_RRNN(matrix):
-    #define k and num_repeats
-    
-    ###########        Hyperparameters      ##########
-    k = 5
-    num_repeats = 15
-    ###########                             ##########
-    
-    
     if isinstance(matrix, str):
             matrix = np.loadtxt(matrix)
     
     n = matrix.shape[0] #get length of row
+      #define k and num_repeats
+     ###########        Hyperparameters      ##########
+    k = 3
+    num_repeats = 35
+        ###########                             ##########
     
-    best_path = [] #storage for actual best path.
-    best_cost = 99999999999999 #some arbitrary val
+    best_path = None #storage for actual best path.
+    best_cost = 99999999999 #some arbitrary val
     
     for i in range(0, num_repeats): #repeats RRNN num_repeats times. 
         path, cost = RRNN(matrix, k, n) #current traversal, cost
@@ -86,9 +85,9 @@ if __name__ == "__main__":
     end_real = time.time_ns()
     end_cpu  = time.process_time_ns()
 
-    print("cost:", cost)
-    print("path:", path)
-    print("Real time (ns):", end_real - start_real)
-    print("CPU time (ns):", end_cpu - start_cpu)
+    #print("cost:", cost)
+    #print("path:", path)
+    #print("Real time (ns):", end_real - start_real)
+    #print("CPU time (ns):", end_cpu - start_cpu)
 
        
