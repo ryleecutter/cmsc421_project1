@@ -78,8 +78,8 @@ def run_HC(matrix):
     if isinstance(matrix, str):
             matrix = np.loadtxt(matrix)
     #need hyperparameter for num restarts -- defines how many times hillclimbing will run
-    num_restarts = 50
-    neighborhood = 20
+    num_restarts = 30
+    neighborhood = 1
     
     #need to define a variable which is the best cost and best traversal
     best_cost = 9999999999  #arbitary cost
@@ -95,7 +95,7 @@ def run_HC(matrix):
             best_cost = it_cost
             best_path = it_path #new best path
     
-    return best_path, best_cost, num_restarts
+    return best_path, best_cost, neighborhood
         
 
 if __name__ == "__main__":
